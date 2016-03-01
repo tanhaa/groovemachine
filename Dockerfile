@@ -1,4 +1,5 @@
 FROM centos:7
+MAINTAINER Amit Malhotra <amalhotra@premiumbeat.com>
 
 # Set US locale (localegen on ubuntu)
 RUN localedef --quiet -c -i en_US -f UTF-8 en_US.UTF-8
@@ -23,7 +24,10 @@ RUN yum clean all && \
     wget \
     GraphicsMagick \
     ffmpeg \
-    ffmpeg-devel
+    ffmpeg-devel \
+    libchromaprint \
+    fftw3 \
+    compat-glibc-headers
 
 # Install pip for python3
 # RUN ln -s /usr/bin/python3.4 /usr/bin/python3
@@ -33,7 +37,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python3 -
 RUN pip2 install supervisor
 RUN mkdir /var/log/supervisor
 
-# libgroove installation
+#### libgroove installation ####
 WORKDIR /root
 # update cmake
 RUN wget https://kojipkgs.fedoraproject.org/packages/cmake/2.8.12/3.fc21/src/cmake-2.8.12-3.fc21.src.rpm
@@ -70,8 +74,6 @@ RUN cd libsoundio-1.0.3 && \
     make install
 
 # install libchromaprint
-RUN yum install -y libchromaprint \
-    fftw3
 ENV FFTW3_DIR /usr/lib64
 RUN wget https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.1.tar.gz && \
     tar xzf chromaprint-1.1.tar.gz
@@ -83,7 +85,6 @@ RUN cd chromaprint-1.1 && \
 # install libsdl
 RUN cd /usr/include && \
     ln -s ffmpeg/* .
-RUN yum install -y compat-glibc-headers
 RUN wget http://www.libsdl.org/release/SDL2-2.0.3.tar.gz && \
     tar -zxf SDL2-2.0.3.tar.gz
 RUN cd SDL2-2.0.3 && \

@@ -7,4 +7,5 @@ Includes: Nodejs, NPM, python2 and python3 along with supervisor.
 
 There is no entrypoint or cmd in this image. It is intended to be used within your own dockerfiles where you may run some applications that requires libgroove.
 
-
+On Docker Hub:
+https://hub.docker.com/r/amalhotra/groovemachine/

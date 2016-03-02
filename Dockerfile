@@ -102,3 +102,6 @@ RUN cd libgroove && \
     cmake .. && \
     make && \
     make install
+
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usrlocal.conf && \
+    ldconfig -v

@@ -105,3 +105,17 @@ RUN cd libgroove && \
 
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usrlocal.conf && \
     ldconfig -v
+
+# Setup the system for requirements installation
+COPY templates/etc/supervisord.conf /etc/supervisord.conf
+
+WORKDIR /tmp
+COPY dependencies.txt /tmp/dependencies.txt
+RUN pip3 install -r dependencies.txt
+
+COPY dependencies.dev.txt /tmp/dependencies.dev.txt
+RUN pip3 install -r dependencies.dev.txt
+
+RUN mkdir -p /opt/apps/env && \
+    ln -s /usr/bin/python3 /opt/apps/env/python
+ENV PATH /opt/apps/env:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
